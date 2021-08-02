@@ -212,7 +212,7 @@ a{
             left: 0;
             right: 0;
             bottom: 0;
-            
+            transition: all 0.4s ease;
             opacity: 0.9;
         }
 
@@ -253,8 +253,9 @@ a{
             align-items: center;
         }
         .uploader-item__loadbar{
-            animation:  loading 3s linear 1 normal;
-            animation-fill-mode: forwards;
+
+            // animation:  loading 3s linear 1 normal;
+            // animation-fill-mode: forwards;
            
         }
      }   
@@ -357,6 +358,7 @@ to{
         justify-content: space-between;
         transition: all 0.3s ease;
         padding: 10px 15px;
+        opacity: 0;
         transition-delay: 0.3s;
         background-color: white;
         border-radius: 10px;
@@ -374,6 +376,7 @@ to{
         opacity: 1;
         visibility: visible;
         .upload-alerts__item{
+            opacity: 1;
             transform: translateX(0%);
         }
     }

@@ -1,7 +1,8 @@
 console.log('upload');
-
+function noop(){};
 export function upload(selector, options ={}){
-    console.log(options)
+    console.log(options);
+ const onUpload = options.onUpload ?? noop   
  const input = document.querySelector(selector);
  const open = document.createElement('button');
  const $window = document.getElementById('up');
@@ -65,6 +66,11 @@ if(options.multi) input.setAttribute('multiple', true)
          setTimeout( ()=> y.remove(), 300)
           
        }
+       if(e.target.dataset.alert){
+         let ale =  e.target.closest('.upload-alerts__item')
+         ale.classList.remove('appear');
+         setTimeout( ()=> ale.remove(), 0)
+       }
    })
 
 }
@@ -82,8 +88,12 @@ function loadItems(items, files){
         element.classList.add('loading');
         const loadbar = element.querySelector('[data-load]');
         loadbar.style.animationDuration = files[i].size / 18000 + 's';
+        onUpload(files, items)
+     if  (loadbar.style.width == '100%') element.querySelector('[data-btn="delete"]').style.display = 'none';
         loadbar.addEventListener('animationend', ()=>{
-            numLoading(loadbar);
+            
+            
+            
             const al = document.getElementById('alerts');
           al.insertAdjacentHTML("beforeend", alertLoading(files[i]));
           al.children ? al.classList.add('appear') : al.classList.remove('appear');
@@ -92,10 +102,6 @@ function loadItems(items, files){
         }
     }
    
-function numLoading(elem){
- let num = elem.nextElementSibling;
- num.textContent = Math.floor(elem.offsetWidth / 1.5) + '%';
-}
 
  
 function alertLoading(element){
@@ -103,7 +109,7 @@ function alertLoading(element){
     <div class="upload-alerts__item appeared">
           <span> Вашого кандидата під іменем <a href="">${element.name}</a>
             було успішно занесено до бази даних </span> 
-            <a href="" class="croos">&times;</a>
+            <a href="" class="croos"  data-alert="delete">&times;</a>
         </div>
     `
     return template
@@ -112,7 +118,6 @@ function alertLoading(element){
 function kb(num){
     return Math.floor(num / 1000)
 }
-
  open.addEventListener('click', ()=>{
      input.click()
  })

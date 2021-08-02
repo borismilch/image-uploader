@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "sass": "^1.36.0"
+  },
+  "dependencies": {
+    "firebase": "^8.8.1"
   }
 }

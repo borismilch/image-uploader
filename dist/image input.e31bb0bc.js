@@ -190,6 +190,14 @@ function upload(selector) {
           return y.remove();
         }, 300);
       }
+
+      if (e.target.dataset.alert) {
+        var ale = e.target.closest('.upload-alerts__item');
+        ale.classList.remove('appear');
+        setTimeout(function () {
+          return ale.remove();
+        }, 300);
+      }
     });
   };
 
@@ -229,7 +237,7 @@ function upload(selector) {
   }
 
   function alertLoading(element) {
-    var template = "\n    <div class=\"upload-alerts__item appeared\">\n          <span> \u0412\u0430\u0448\u043E\u0433\u043E \u043A\u0430\u043D\u0434\u0438\u0434\u0430\u0442\u0430 \u043F\u0456\u0434 \u0456\u043C\u0435\u043D\u0435\u043C <a href=\"\">".concat(element.name, "</a>\n            \u0431\u0443\u043B\u043E \u0443\u0441\u043F\u0456\u0448\u043D\u043E \u0437\u0430\u043D\u0435\u0441\u0435\u043D\u043E \u0434\u043E \u0431\u0430\u0437\u0438 \u0434\u0430\u043D\u0438\u0445 </span> \n            <a href=\"\" class=\"croos\">&times;</a>\n        </div>\n    ");
+    var template = "\n    <div class=\"upload-alerts__item appeared\">\n          <span> \u0412\u0430\u0448\u043E\u0433\u043E \u043A\u0430\u043D\u0434\u0438\u0434\u0430\u0442\u0430 \u043F\u0456\u0434 \u0456\u043C\u0435\u043D\u0435\u043C <a href=\"\">".concat(element.name, "</a>\n            \u0431\u0443\u043B\u043E \u0443\u0441\u043F\u0456\u0448\u043D\u043E \u0437\u0430\u043D\u0435\u0441\u0435\u043D\u043E \u0434\u043E \u0431\u0430\u0437\u0438 \u0434\u0430\u043D\u0438\u0445 </span> \n            <a href=\"\" class=\"croos\"  data-alert=\"delete\">&times;</a>\n        </div>\n    ");
     return template;
   }
 
@@ -355,7 +363,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59396" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56802" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

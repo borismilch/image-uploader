@@ -289,6 +289,7 @@ a {
   justify-content: space-between;
   transition: all 0.3s ease;
   padding: 10px 15px;
+  opacity: 0;
   transition-delay: 0.3s;
   background-color: white;
   border-radius: 10px;
@@ -306,6 +307,7 @@ a {
   visibility: visible;
 }
 .upload-alerts.appear .upload-alerts__item {
+  opacity: 1;
   transform: translateX(0%);
 }
 
