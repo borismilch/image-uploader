@@ -2,19 +2,61 @@ console.log('upload');
 function noop(){};
 export function upload(selector, options ={}){
     console.log(options);
- const onUpload = options.onUpload ?? noop   
+ const onUpload = options.onUpload ?? noop;
+ let download =  document.createElement('button');
+ download.classList.add('uploader-head__upload');
+ download.classList.add('down')
+ download.dataset.btn = 'ownload';
+ download.textContent = 'watch gallery';
+ 
+ const viever = document.createElement('div');
+ let $uploader = document.createElement('button');
+
+ let $uploaderD = $uploader.style.display;
+ $uploader.classList.add('uploader-head__upload');
+ $uploader.dataset.btn = "upload"
+ $uploader.textContent = 'Загрузить';
+$uploader.style.display = 'none';
+ viever.classList.add('spavn')
+ viever.insertAdjacentHTML("afterbegin", `  <div class="spavn__title">Create your ovn gallery</div>
+ <button class="spavn__btn" data-spavn>Click here</button>`);
+ console.log(viever);
  const input = document.querySelector(selector);
+ console.log(input)
  const open = document.createElement('button');
  const $window = document.getElementById('up');
+ const $app = document.getElementById('app');
  open.classList.add('uploader-head__open')
  open.textContent = options.b1Text || 'Open';
 if(options.multi) input.setAttribute('multiple', true)
+input.insertAdjacentElement("afterend", $uploader);
+input.parentNode.appendChild(download)
  input.insertAdjacentElement("afterend", open);
+ 
+ $app.insertAdjacentElement('beforebegin', viever);
+ console.log(viever)
+ let l = $app.firstElementChild
+ document.addEventListener('click', (e)=>{
+ 
+     if(e.target.classList.contains('spavn__btn')){
+        l.style.opacity = 1;
+        l.style.visibility = 'visible'
+     }
+     if(e.target.dataset.body){
+        l.style.opacity = 0;
+        l.style.visibility = 'hidden';
+        input.parentNode.parentNode.nextElementSibling.innerHTML = ''
+     }
+ })
+
+
+
 
  if(options.accept && Array.isArray(options.accept)){
      input.setAttribute('accept', options.accept.join(','))
  }
  const changeHandler = event =>{
+    
  if(event.target.files.lenght == 0) {return};
 
     const files = Array.from(event.target.files);
@@ -45,34 +87,41 @@ if(options.multi) input.setAttribute('multiple', true)
       reader.readAsDataURL(files[i]);
      
     }
-    let $uploader = $output.parentNode.querySelector('[data-btn="upload"]')
+   
     let items;
     setTimeout (function(){
      items =  document.getElementById('space').querySelectorAll('.uploader-item');
-    
-    console.log(items,$output, $uploader);
-    items.lenght !== 0 ? $uploader.style.display = 'block' : $uploader.style.display = 'none'; 
     $uploader.addEventListener('click', arrload(items))
     }, 500)
    $window.addEventListener('click', (e)=>{
-       e.preventDefault();
+       
        if(e.target.dataset.btn == "upload"){
         loadItems(items,files);
+        watchGallery(e.target, download);
+
+
        }
        if(e.target.dataset.btn == "delete"){
            let y = e.target.closest('.uploader-item');
            y.style.width = '0px';
            y.style.height = '0px';
-         setTimeout( ()=> y.remove(), 300)
-          
+        setTimeout(()=>{ y.remove();
+          $window.querySelector('.uploader-item') == null ? $uploaderD = 'none' : $uploaderD = 'inline';
+          console.log($window.querySelector('.uploader-item')) 
+        }, 300)
        }
-       if(e.target.dataset.alert){
-         let ale =  e.target.closest('.upload-alerts__item')
-         ale.classList.remove('appear');
-         setTimeout( ()=> ale.remove(), 0)
-       }
+       if(e.target.dataset.btn == "ownload"){
+        l.style.opacity = 0;
+        l.style.visibility = 'hidden';
+        $output.innerHTML = '';
+        e.target.style.display = 'none'
+    }
+      
    })
 
+   $output.innerHTML= '';
+   $uploader.style.display = 'inline'
+   console.log($output)
 }
 function arrload(arr){
     let delay = 0;
@@ -90,13 +139,8 @@ function loadItems(items, files){
         loadbar.style.animationDuration = files[i].size / 18000 + 's';
         onUpload(files, items)
      if  (loadbar.style.width == '100%') element.querySelector('[data-btn="delete"]').style.display = 'none';
-        loadbar.addEventListener('animationend', ()=>{
-            
-            
-            
-            const al = document.getElementById('alerts');
-          al.insertAdjacentHTML("beforeend", alertLoading(files[i]));
-          al.children ? al.classList.add('appear') : al.classList.remove('appear');
+        loadbar.addEventListener('transitionend', ()=>{
+        setTimeout(()=> element.classList.add('fullyloaded'), 400)
         })
          
         }
@@ -104,22 +148,18 @@ function loadItems(items, files){
    
 
  
-function alertLoading(element){
-    let template =`
-    <div class="upload-alerts__item appeared">
-          <span> Вашого кандидата під іменем <a href="">${element.name}</a>
-            було успішно занесено до бази даних </span> 
-            <a href="" class="croos"  data-alert="delete">&times;</a>
-        </div>
-    `
-    return template
-}
+
 
 function kb(num){
     return Math.floor(num / 1000)
 }
  open.addEventListener('click', ()=>{
-     input.click()
+     input.click();
  })
  input.addEventListener('change', changeHandler)
 }
+function watchGallery(elem, appended){
+     appended.style.display = 'inline';
+     elem.style.display = 'none'; 
+    appended.setAttribute('disabled', 'disabled')
+    }

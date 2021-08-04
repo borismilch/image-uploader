@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/storage';
 import {upload} from './sourse/uploader.js';
-
+import {gallery} from './sourse/gallery.js';
 import './sourse/style.scss';
 
 const firebaseConfig = {
@@ -28,20 +28,24 @@ upload('#input', {
             const ref = storage.ref(`images/${file.name}`)
            const task =  ref.put(file);
 
-           task.on('state_changed', snapshot =>{
+           task.on('STATE_CHANGED', snapshot =>{
             const percentage = Math.floor(snapshot.bytesTransferred / snapshot.totalBytes * 100) + '%';
           const block =  blocks[index].querySelector('[data-percent]');
            block.textContent = percentage;
           blocks[index].querySelector('[data-load]').style.width = percentage;
-            console.log( blocks[index].querySelector('[data-load]'))
            }, error=>{
             console.log('error')
            }, () =>{
+               if(task.snapshot.bytesTransferred == task.snapshot.totalBytes)
               task.snapshot.ref.getDownloadURL().then(url =>{
-                  console.log('Download', url)
+                console.log(document.querySelector('[data-btn="ownload"]').disabled);
+                document.querySelector('[data-btn="ownload"]').disabled = false 
+              
+                
               })
            })
         })
     }
 
 })
+
