@@ -1,4 +1,5 @@
 console.log('upload');
+import {createGallery} from "./gallery.js"
 function noop(){};
 export function upload(selector, options ={}){
     console.log(options);
@@ -8,7 +9,9 @@ export function upload(selector, options ={}){
  download.classList.add('down')
  download.dataset.btn = 'ownload';
  download.textContent = 'watch gallery';
- 
+let gallery = document.createElement('div');
+gallery.classList.add('gallery');
+gallery.dataset.gallery = 'gallery'; 
  const viever = document.createElement('div');
  let $uploader = document.createElement('button');
 
@@ -32,12 +35,14 @@ if(options.multi) input.setAttribute('multiple', true)
 input.insertAdjacentElement("afterend", $uploader);
 input.parentNode.appendChild(download)
  input.insertAdjacentElement("afterend", open);
- 
+ $app.insertAdjacentElement('afterend', gallery)
+ console.log(gallery);
+ gallery.insertAdjacentElement('afterbegin', viever)
  $app.insertAdjacentElement('beforebegin', viever);
  console.log(viever)
  let l = $app.firstElementChild
  document.addEventListener('click', (e)=>{
- 
+    console.log(e.target)
      if(e.target.classList.contains('spavn__btn')){
         l.style.opacity = 1;
         l.style.visibility = 'visible'
@@ -47,6 +52,11 @@ input.parentNode.appendChild(download)
         l.style.visibility = 'hidden';
         input.parentNode.parentNode.nextElementSibling.innerHTML = ''
      }
+     if(e.target.classList.contains('gallery__overlay')){
+        e.target.style.opacity = 0;
+        e.target.style.visibility = 'hidden';
+    }
+ 
  })
 
 
@@ -114,7 +124,10 @@ input.parentNode.appendChild(download)
         l.style.opacity = 0;
         l.style.visibility = 'hidden';
         $output.innerHTML = '';
-        e.target.style.display = 'none'
+        e.target.style.display = 'none';
+        if(options.gallery){
+            createGallery(items, gallery);
+        }
     }
       
    })

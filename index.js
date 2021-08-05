@@ -17,9 +17,10 @@ const firebaseConfig = {
 
 const storage = firebase.storage();
 console.log(storage)
-
+let set = new Set();
 upload('#input', {
     multi : true,
+    gallery : true,
     b1Text : 'opening',
     b2Text : 'uploading',
     accept : ['.png', '.jpeg', '.jpg', '.psd'],
@@ -36,13 +37,12 @@ upload('#input', {
            }, error=>{
             console.log('error')
            }, () =>{
-               if(task.snapshot.bytesTransferred == task.snapshot.totalBytes)
+               if(task.snapshot.bytesTransferred == task.snapshot.totalBytes){
               task.snapshot.ref.getDownloadURL().then(url =>{
-                console.log(document.querySelector('[data-btn="ownload"]').disabled);
-                document.querySelector('[data-btn="ownload"]').disabled = false 
-              
-                
+               
+                document.querySelector('[data-btn="ownload"]').disabled = false; 
               })
+            }
            })
         })
     }
